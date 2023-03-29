@@ -1,0 +1,19 @@
+PAKET ZA INSTALACIJU:
+
+PM> NuGet\Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design -Version 6.0.13 7:2
+_______________________________________________________________________________________
+(Klik na Projekt -> Add)
+
+AddNew Scaffolded Item
+Identity
+___________________________
+Add Identity (dodatni skočni prozor)
+
++ Account/Login
++ Account/LogOut
++ Account/Register
+
+DbContext class: ApplicationDbContext + 
+(tako se obično naziva)
+
+User class: ApplicationUser +
