@@ -31,5 +31,5 @@
 
     //Izbacivanje gornje datoteke iz projekta ---- .gitIgnore (LocalDisc C: > users > anama > source > modul_9)  (drag and drop u VS) ---> appsettings.Development.json
 
-    //
+    //Ovo gore ne prolazi jer smo već stavili .gitIgnore na Github. Onda brišemo datoteku aasettings.Development.json i ponovno je stvaramo na Add/New Item (samo upišem to ime dataoteke, ona će direktno spremiti pod appsettings.json)
 }
