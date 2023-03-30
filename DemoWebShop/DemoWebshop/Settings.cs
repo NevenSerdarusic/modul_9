@@ -1,12 +1,15 @@
 ﻿namespace DemoWebshop
 {
+    #region
     //KOJI SE SVEPAKETI DODAJU U DEPENDECIES:
     //Microsoft.AspNetCore.Identity.EntityFrameworkCore
     //Microsoft.AspNetCore.Identity --> ovaj paket generira ostala 4 paketa
     //Microsoft.EntityFrameworkCore.SqlServer
     //Microsoft.EntityFrameworkCore.Tools
     //Microsoft.VisualStudio.Web.CodeGeneration.Design
+    #endregion
 
+    #region
     //AREAS FOLDER:
     //Identity
     //Data
@@ -14,9 +17,11 @@
     //ApplicationUser.cs
     //Pages
     //Account
+    #endregion
 
     //============================================================================================================
 
+    #region
     //KORACI KOJI SLIJEDE:
 
     //Dodavanje partial View-a Identifikacije ----- Views/Shared/Layout.cshtml (Register/Login)
@@ -32,4 +37,12 @@
     //Izbacivanje gornje datoteke iz projekta ---- .gitIgnore (LocalDisc C: > users > anama > source > modul_9)  (drag and drop u VS) ---> appsettings.Development.json
 
     //Ovo gore ne prolazi jer smo već stavili .gitIgnore na Github. Onda brišemo datoteku aasettings.Development.json i ponovno je stvaramo na Add/New Item (samo upišem to ime dataoteke, ona će direktno spremiti pod appsettings.json)
+
+    //Ažurirati conection String ---- Program.cs ---> var connectionString = builder.Configuration.GetConnectionString("Default")
+
+    //Promjena bool-a za slanje mailova za potvrdu --- Program.cs ---> SignIn.RequireConfirmedAccount = false
+
+    //
+
+    #endregion
 }
