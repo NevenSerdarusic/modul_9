@@ -1,4 +1,5 @@
 ﻿using DemoWebshop.Areas.Identity.Data;
+using DemoWebshop.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,19 @@ namespace DemoWebshop.Data;
 //IdentityDBContext mora imati pristup bazi. Dio Identity paketa. Dobiva klasu User <ApplicationUser>  ----> Posrednik između Entity Frameworka i baze
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
+    //Mapiranje C# klase modela s tablicama u bazi podataka
+    public DbSet<Category> Categories { get; set; }
+
+    public DbSet<Product> Products { get; set; }
+
+    public DbSet<Order> Orders { get; set; }
+
+    public DbSet<ProductCategory> ProductCategories { get; set; }
+
+    public DbSet<OrderItem> OrderItems { get; set; }
+
+
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     {
 

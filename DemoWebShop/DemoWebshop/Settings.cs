@@ -22,7 +22,7 @@
     //============================================================================================================
 
     #region
-    //KORACI KOJI SLIJEDE:
+    //PODEŠAVANJE PROJEKTA:
 
     //Dodavanje partial View-a Identifikacije ----- Views/Shared/Layout.cshtml (Register/Login)
 
@@ -40,7 +40,21 @@
 
     //Ažurirati conection String ---- Program.cs ---> var connectionString = builder.Configuration.GetConnectionString("Default")
 
-    //Promjena bool-a za slanje mailova za potvrdu --- Program.cs ---> SignIn.RequireConfirmedAccount = false
+    //Promjena bool-a za slanje mailova za potvrdu --- Program.cs ---> SignIn.RequireConfirmedAccount = false 
+
+    //Radimo prvu migraciju prema bazi ---- Package Manager Console ---> PM> add-migration CreateIdentityTables (stvara se folder Migration u hijerarhiji)
+
+    //Radimo prvi update u bazu --- Package Manager Console ---> PM> update-database
+
+    //U bazi nama su važne tablice: AspNetRoles/AspNetUserRoles/AspNetUsers
+
+    //Ako želimo promijeniti svojstva Useta to radimo unutar ApplicationUser.cs
+
+    //Radimo drugu migraciju, dodajemo proširenje tablice User ---- Package Manager Console ---> add-migration ExpandUserTable
+
+    //Radimo drugi update u bazu --- Package Manager Console ---> PM> update-database
+
+    //Kreiranje klasa modela ---- Models Folder
 
     //
 
