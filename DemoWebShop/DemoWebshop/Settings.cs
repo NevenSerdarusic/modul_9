@@ -1,7 +1,7 @@
 ﻿namespace DemoWebshop
 {
     #region
-    //KOJI SE SVEPAKETI DODAJU U DEPENDECIES:
+    //KOJI SE SVE PAKETI DODAJU U DEPENDECIES:
     //Microsoft.AspNetCore.Identity.EntityFrameworkCore
     //Microsoft.AspNetCore.Identity --> ovaj paket generira ostala 4 paketa
     //Microsoft.EntityFrameworkCore.SqlServer
@@ -10,7 +10,7 @@
     #endregion
 
     #region
-    //AREAS FOLDER:
+    //dodani AREAS FOLDER:
     //Identity
     //Data
     //ApplicationDbContext.cs
@@ -48,15 +48,38 @@
 
     //U bazi nama su važne tablice: AspNetRoles/AspNetUserRoles/AspNetUsers
 
-    //Ako želimo promijeniti svojstva Useta to radimo unutar ApplicationUser.cs
+    //Ako želimo promijeniti svojstva User-a to radimo unutar ApplicationUser.cs
 
     //Radimo drugu migraciju, dodajemo proširenje tablice User ---- Package Manager Console ---> add-migration ExpandUserTable
 
     //Radimo drugi update u bazu --- Package Manager Console ---> PM> update-database
 
-    //Kreiranje klasa modela ---- Models Folder
+    //Kreiranje klasa modela ---- Models Folder (Category, Order, Product, OrderItem, ProductCategory)
 
-    //
+    //Radimo seed-anje podataka za tablice --- AplicationDbContext.cs ---> DbSet<Category>, ...
+
+    #endregion
+
+    //============================================================================================================
+
+    #region
+    //PODEŠAVANJE ADMINISTRATORA:
+
+    //Ograničavamo autorizaciju za neprijavljene korisnike --- HomeController.cs ---> [Authorize] atribut iznad same klase (zaključavanje koda za neprijavljene korisnike)
+
+    //Seed-anje prvog korisničkog računa, administratora --- AplicationDbContext.cs ---> ADMIN, CUSTOMER
+
+    //Radimo migraciju podataka za korisnike --- Package Manager Console ---> PM> add-migration SeedAspNetRolesTable
+
+    //update-database migracije gore navedene (u SQL-u to možemo provjeriti na dbo.AspNetRoles)
+
+    //Kreiranje Administratora --- AplicationDbContext.cs ---> Asp.Net.Users i Asp.Net.UserRoles
+
+    //kreiranje migracije za , odnosno za podatke iznad --- Package Manager Console ---> CreateAdminUser
+
+    //updejtanje baze podataka --- Package Manager Console ---> update-database
+
+    //Nakon ovoga sad možemo se logirati sa podacima za admnina: username+lozinka --- na početnoj stranici piše Hello, admin!
 
     #endregion
 }

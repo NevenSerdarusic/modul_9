@@ -4,6 +4,7 @@ using DemoWebshop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoWebshop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230403164411_SeedAspNetRolesTable")]
+    partial class SeedAspNetRolesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,27 +102,6 @@ namespace DemoWebshop.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "e02324b1-18a5-4ca9-b562-b7b85eadb1aa",
-                            AccessFailedCount = 0,
-                            Adress = "Stara cesta bb",
-                            ConcurrencyStamp = "e14704f7-0210-4892-bd56-9007b8f11086",
-                            Email = "mico@admin.com",
-                            EmailConfirmed = false,
-                            FirstName = "Mićo",
-                            LastName = "Programerić",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "MICO@ADMIN.COM",
-                            NormalizedUserName = "MICO@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPxuIZvejNtRz/wwLVZ6uwXkF8GEdh5afARDagxw+cZIHqwAueAb1WHrSTi+SeKEoA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "b188481a-5026-4bab-8ed4-c131b3e10322",
-                            TwoFactorEnabled = false,
-                            UserName = "mico@admin.com"
-                        });
                 });
 
             modelBuilder.Entity("DemoWebshop.Models.Category", b =>
@@ -386,14 +367,14 @@ namespace DemoWebshop.Migrations
                         new
                         {
                             Id = "209cf38b-e7a3-48b2-a5ca-6744d6eb464a",
-                            ConcurrencyStamp = "8906f809-dfaa-42e7-8daa-614999bf1ca9",
+                            ConcurrencyStamp = "fdbedd24-eee4-4b3e-bccb-8c390c60d1d3",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "8aaecd59-3fc7-40db-a1e6-8ea379a9d34c",
-                            ConcurrencyStamp = "6e9b5e4a-4383-44b0-b2fd-353cb9fad32b",
+                            ConcurrencyStamp = "7c82f2f1-4928-4f16-ae49-ac05d6a4533a",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -486,13 +467,6 @@ namespace DemoWebshop.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "e02324b1-18a5-4ca9-b562-b7b85eadb1aa",
-                            RoleId = "209cf38b-e7a3-48b2-a5ca-6744d6eb464a"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
