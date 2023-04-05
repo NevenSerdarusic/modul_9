@@ -2,15 +2,15 @@
 {
     #region
     //KOJI SE SVE PAKETI DODAJU U DEPENDECIES:
-    //Microsoft.AspNetCore.Identity.EntityFrameworkCore
     //Microsoft.AspNetCore.Identity --> ovaj paket generira ostala 4 paketa
+    //Microsoft.AspNetCore.Identity.EntityFrameworkCore
     //Microsoft.EntityFrameworkCore.SqlServer
     //Microsoft.EntityFrameworkCore.Tools
     //Microsoft.VisualStudio.Web.CodeGeneration.Design
     #endregion
 
     #region
-    //dodani AREAS FOLDER:
+    //Sadržaj AREAS FOLDER-a:
     //Identity
     //Data
     //ApplicationDbContext.cs
@@ -80,6 +80,23 @@
     //updejtanje baze podataka --- Package Manager Console ---> update-database
 
     //Nakon ovoga sad možemo se logirati sa podacima za admnina: username+lozinka --- na početnoj stranici piše Hello, admin!
+
+    //Kreiranje foldera za Admina unutar Areas Foldera (Controllers + Views). Odvajamo javni dio aplikaicje od ograničenog, dostupnog samo preko admina
+
+    //Radimo novi kontroler unutar mape Areas/Admin/Controllers --- (Add New Controler) ---> MVC Controller with Views using Entity Framework (predložak) - ovo izgenerira CRUD unutar View-s na temelju model klase koji smo izabrali (npr.Category)   
+
+    //želimo ubaciti izbornik pored Privacy-a na početnoj stranici za Administratora (taj dio se vidi samo kad se Admin prijavi) --- Views/Shared ---> Add New View/Empty ---> _AdminMenuPartial (naziv djelomičnog pogleda)
+
+    //Dodajemo gore navedeni Partial View na ribbon u glavnom izborniku --- Views/Shared/Layout.cshtml
+
+    //Moramo dodati uloge unutar postavki servisa --- Program.cs ---> builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>(); ___dio koji dodajemo: AddRoles<IdentityRole>()
+
+    //dodavanje rute za Admina unutar posavki servisa ---- Program.cs ---> app.MapAreaControllerRoute
+
+    //unutar partial viewa za admina dodati padajuće izbornike (npr.Category) --- _AdminMenuPartial 
+
+    //pošto nemamo dizajn unutar novog partial view-a (Categories) u Admin izborniku moramo kopirati (_ViewImports.cshtml i _ViewStart.cshtml) koji se nalaze unutar Views foldera i kopirati te dvije datoteke unutar Areas/Admin/Views
+
 
     #endregion
 }

@@ -25,9 +25,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li>
+                            <partial name="_AdminMenuPartial" /> @*ADDING PARTIAL FOR ADMIN MENU BUTTON*@
+                        </li>
                     </ul>
 
-                    <partial name="_LoginPartial" /> @*ADDING PARTIAL WHO BUTTONS REGISTER/LOGIN*@
+                    <partial name="_LoginPartial" /> @*ADDING PARTIAL FOR BUTTONS REGISTER/LOGIN*@
 
                 </div>
             </div>

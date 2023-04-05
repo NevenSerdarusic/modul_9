@@ -18,7 +18,7 @@ public class Program
 
         //Servis koji kaže kako je klasa ApplicationUser glavna za identifikaciju korisnika
         //SignIn.RequireConfirmedAccount = true --- se mora promijenit u false
-        builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
+        builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
@@ -43,6 +43,13 @@ public class Program
         app.UseAuthentication();
 
         app.UseAuthorization();
+
+        //dodavanje rute za Admina
+        app.MapAreaControllerRoute(
+            name: "Admin",
+            areaName: "Admin",
+            pattern: "admin/{controller}/{action}/{id?}"
+            );
 
         app.MapControllerRoute(
             name: "default",
