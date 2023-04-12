@@ -11,12 +11,12 @@
 
     #region
     //Sadržaj AREAS FOLDER-a:
-    //Identity
-    //Data
-    //ApplicationDbContext.cs
-    //ApplicationUser.cs
-    //Pages
-    //Account
+        //Identity
+        //Data
+            //ApplicationDbContext.cs
+            //ApplicationUser.cs
+        //Pages
+            //Account
     #endregion
 
     //============================================================================================================
@@ -98,5 +98,37 @@
     //pošto nemamo dizajn unutar novog partial view-a (Categories) u Admin izborniku moramo kopirati (_ViewImports.cshtml i _ViewStart.cshtml) koji se nalaze unutar Views foldera i kopirati te dvije datoteke unutar Areas/Admin/Views
 
 
+    #endregion
+    //=========================================================================================================
+
+    #region
+    //PODEŠAVANJE LOZINKE ZA KORISNIKA (ako želimo olabaviti lozinku)
+
+    //unutar Program.cs ---> builder.Services.Configure<IdentityOptions>
+
+    #endregion
+
+    //==========================================================================================================
+
+    #region
+    //Proširujemo HTML formu za registraciju korisnika (ime,prezime,adresa) i želimo im automatski dodijeliti ulogu Customer
+
+    //To radimo unutar Register.cshtml.cs --- Areas/Identity/Pages/Account/Register.cshtml ---> private readonly RoleManager<IdentityRole> _roleManager;
+
+    //Nakon toga moramo to napraviti i u HTML-u da se to renderira kad odemo na Register--- Register.cshtml 
+
+    //Moramo dodati novog korisnika u metodu --- Register.cshtml.cs ---> public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+
+    //Dodavanje uloge Cutomera --- Register.cshtml.cs ---> var customerRole = _roleManager.FindByNameAsync("Customer").Result;
+
+    //Ostaje još jedan problem!! Kupac može u URL-u doći do podataka (pr.https://localhost:7192/admin/products/index)
+
+    //To rješavamo tako da unutar Controllera koji pripadaju Adminu proširimo na: [Authorize(Roles = "Admin")] 
+    #endregion
+
+    #region
+    //PODEŠAVANJE JAVNOG DIJELA APLIKACIJE
+
+    //
     #endregion
 }

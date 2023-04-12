@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DemoWebshop.Data;
 using DemoWebshop.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DemoWebshop.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")] //Zaključavamo kontroler, ako netko pokuša pristupiti preko rute, Identity paket će ga tražiti autentifikaciju 
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -49,6 +51,9 @@ namespace DemoWebshop.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
+            //prebacujemo što smo napisali dolje niže unutar HTTP Post Create
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string ?? ""; //ako ne posotji poruka ona je po defaultu prazna
+            
             return View();
         }
 
@@ -57,12 +62,68 @@ namespace DemoWebshop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Sku,InStock,Price,Image")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Sku,InStock,Price,Image")] Product product, int[] categoryIds, IFormFile Image) //tu smo dodali categoryIds i IFormFile za hvatanje datoteke image
         {
+
+            //1.korak = provjeri ako je parametar categoryIds prazan ili null
+            if (categoryIds.Length == 0 || categoryIds == null)
+            {
+                //izbaci poruku kako se kategorije moraju odabrati
+                //TempData je svojstvo/kolekcija koja kreira kratkoročne poruke u sesiji između dvije akcije kontrolera
+                TempData["ErrorMessage"] = "Molimo odaberite minimalno jednu kategoriju!";
+                return RedirectToAction("Create");
+            }
+
+            //2.korak = pohrani proizvod u tablicu i nakon toga poveži proizvod sa odabranim kategorijama
             if (ModelState.IsValid)
             {
-                _context.Add(product);
+                //2.1 korak = pokušaj pohraniti sliku na disk i spremi naziv slike u product.Image
+                try
+                {
+                    //Primjer 1 naziva slike 
+                    var imageName = Image.FileName.ToLower();
+
+
+                    //odabir putanje gdje će slika biti spremljena
+                    //rezultat: ~/www.root/images/products/naziv-slike.png
+                    var saveImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/products", imageName);
+
+
+                    //Kreiraj direktorije i podirektorije unutar zadane putanje (wwwroot/images/products)
+                    Directory.CreateDirectory(Path.GetDirectoryName(saveImagePath));
+
+                    //ovdje se datoteka fizički kopira unutar zadane putanje (wwwroot/images/products) direktorija projekta
+                    using (var stream = new FileStream(saveImagePath, FileMode.Create))
+                    {
+                        Image.CopyTo(stream);
+                    }
+
+                    //u stupac tablice u SQL pohranjujemo samo naziv datoteke
+                    product.Image = imageName;
+
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = ex.Message;
+                    return RedirectToAction(nameof(Create)); //ako uploda ne prođe izbaci poruku i vrati nas na Create akciju
+                }
+                
+                _context.Add(product); 
                 await _context.SaveChangesAsync();
+                
+                //nakon pohrane zapisa u tablicu EF Core će u objektu popuniti vrijednost za svojstvo product.Id
+
+                //2.2 korak = poveži product.Id sa stavkama niza categoryIds i pohrani sve u tablicu ProductCategories
+                foreach (var categoryId in categoryIds)
+                {
+                    ProductCategory productCategory = new ProductCategory();
+                    productCategory.CategoryId = categoryId;
+                    productCategory.ProductId = product.Id;
+
+                    _context.ProductCategories.Add(productCategory);
+                }
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(product);

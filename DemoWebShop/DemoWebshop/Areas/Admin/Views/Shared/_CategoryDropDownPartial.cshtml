@@ -1,0 +1,24 @@
+﻿@*
+    Djelomični pogled za dodavanje kategorija:
+*@
+
+@using DemoWebshop.Data; @*dohvaćamo ApplicationDbContext koja se nalazi u AREAS/IDENTITY/DATA*@
+@*možemo dohvatiti sve Db<Set> ove sa svim kategorijama - tablicama*@
+@inject ApplicationDbContext _dbContext 
+
+
+<div class="form-group">
+
+    <label class="control-label">Select product categories</label>
+
+    <select class="form-control" name="categoryIds[]" multiple>
+
+        @foreach (var categoryItem in _dbContext.Categories.ToList())
+        {
+            <option value="@categoryItem.Id"> @categoryItem.Title </option>
+        }
+
+    </select>
+
+</div>
+

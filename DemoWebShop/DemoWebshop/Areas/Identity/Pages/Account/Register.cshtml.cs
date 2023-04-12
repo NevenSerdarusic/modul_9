@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 
 namespace DemoWebshop.Areas.Identity.Pages.Account
 {
@@ -31,12 +32,17 @@ namespace DemoWebshop.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+
+        //Varijabla koja ima pristup ulogama u tablici Asp.Net.Roles
+        private readonly RoleManager<IdentityRole> _roleManager; //VARIJABALA
+
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager) //DEPENDENCIES INJECTION
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +50,7 @@ namespace DemoWebshop.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -69,7 +76,7 @@ namespace DemoWebshop.Areas.Identity.Pages.Account
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public class InputModel
+        public class InputModel //ovjde se nalaze svojstva koja se pokazuju/renderiraju na HTML formi
         {
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -98,6 +105,23 @@ namespace DemoWebshop.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            //OVO SMO DODALI KAKO SMO PROŠIRILI FORMU ZA REGISTRACIJU
+            //Mapiramo input polja u HTML formi Register.cshtml sa svojstvima klase ApplicationUser
+            [Required]
+            [DataType(DataType.Text)]
+            [DisplayName("First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [DisplayName("Last Name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [DisplayName("Adress")]
+            public string Adress { get; set; }
         }
 
 
@@ -107,13 +131,18 @@ namespace DemoWebshop.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+       
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var user = CreateUser(); //OVJDE SE STVARA NOVI OBJEKT KORISNIKA
+                //Dodjeljivanje vrijednosti klasi user iz HTML forme registracije
+                user.FirstName = Input.FirstName; //
+                user.LastName = Input.LastName; //
+                user.Adress = Input.Adress; //
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -121,6 +150,15 @@ namespace DemoWebshop.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+
+                    //DODAJ ULOGU KORISNIKU KOJI SE REGISTRIRA PREKO STRANICE (Customer)
+                    var customerRole = _roleManager.FindByNameAsync("Customer").Result;
+
+                    if (customerRole != null) 
+                    {
+                        await _userManager.AddToRoleAsync(user, customerRole.Name); //Ako nije prazan dodaj mu ulogu
+                    }
+                    
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

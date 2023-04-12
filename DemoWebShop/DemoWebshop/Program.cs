@@ -2,6 +2,8 @@ using DemoWebshop.Areas.Identity.Data; //Poveznica za User klasu
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DemoWebshop.Data;
+using System.Globalization;
+
 namespace DemoWebshop;
 
 public class Program
@@ -20,11 +22,27 @@ public class Program
         //SignIn.RequireConfirmedAccount = true --- se mora promijenit u false
         builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
+       
+
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
         //Kreiranje servisa za korištenje RazorPage opcija
         builder.Services.AddRazorPages();
+
+
+        //Postavke za lozinku za registraciju novih korisnika (Samo za vježbu da ne zaboravimo)
+        builder.Services.Configure<IdentityOptions>(
+            options =>
+            {
+                //Osnovne postavke za lozinku 
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 7;
+            }
+         );
 
         var app = builder.Build();
 
@@ -38,6 +56,20 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+
+        //Postavke aplikacije za rukovanje decimalnim vrijednostima (Culture Info)
+        var cultureInfo = new CultureInfo("de-De");
+        cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+        cultureInfo.NumberFormat.CurrencyDecimalSeparator = ".";
+        app.UseRequestLocalization(
+            new RequestLocalizationOptions 
+            { 
+                DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(cultureInfo), 
+                SupportedCultures = new List<CultureInfo> { cultureInfo }, 
+                SupportedUICultures = new List<CultureInfo> { cultureInfo } 
+            }
+         );
+
 
         app.UseRouting();
         app.UseAuthentication();
