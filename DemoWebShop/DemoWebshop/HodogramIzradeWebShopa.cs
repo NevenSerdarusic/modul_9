@@ -11,12 +11,12 @@
 
     #region
     //Sadržaj AREAS FOLDER-a:
-        //Identity
-        //Data
-            //ApplicationDbContext.cs
-            //ApplicationUser.cs
-        //Pages
-            //Account
+    //Identity
+    //Data
+    //ApplicationDbContext.cs
+    //ApplicationUser.cs
+    //Pages
+    //Account
     #endregion
 
     //============================================================================================================
@@ -126,9 +126,31 @@
     //To rješavamo tako da unutar Controllera koji pripadaju Adminu proširimo na: [Authorize(Roles = "Admin")] 
     #endregion
 
-    #region
-    //PODEŠAVANJE JAVNOG DIJELA APLIKACIJE
+    //==========================================================================================================
 
+    #region
+    //PODEŠAVANJE DIZAJNA JAVNOG DIJELA APLIKACIJE
+    //(ovaj dio je vidljiv na Home dijelu stranice bez potrebe da se logiramo ili registriramo)
+
+    //Uređivanje Home Page-a --- Views/Home/Index.cshtml
+
+    //Prebacivanje liste proizvoda iz baze podataka u Home/Index View --- HomeController.cs ---> Index Akcija + ApplicationDbContext
+    //Glavna klasa, most između baze podataka i Controllera: [ApplicationDbContext.cs] --- preko nje dohvaćamo naše klase koje smo stvorili
+
+    //Dodali smo Defaultni Placeholder za Fotografije (Copy/Paste) unutar foldera wwwroot/images/
+
+    //FILTRIRANJE proizvoda ---- Views/Home/Index.cshtml (radimo html formu uz pomoć Bootstrapa)
+    //                      ---- HomeController.cs/Index Akcija (proslijeđujemo parametar searchQuery iz forme iznad)
+    //Uključiti Case Sensitive za mala i velika slova
+
+    //SORTIRANJE proizvoda
+
+
+    #endregion
+
+    //==========================================================================================================
+
+    #region
     //
     #endregion
 }
