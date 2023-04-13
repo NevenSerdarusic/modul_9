@@ -15,10 +15,19 @@
 
         @foreach (var categoryItem in _dbContext.Categories.ToList())
         {
-            <option value="@categoryItem.Id"> @categoryItem.Title </option>
+            <!option 
+                value="@categoryItem.Id"
+                @if(ViewBag.ProductCategories != null)
+                {
+                    @(ViewBag.ProductCategories.Contains(categoryItem.Id) ? "selected" : "")
+                }
+                > @categoryItem.Title 
+            </!option>
         }
 
     </select>
 
 </div>
 
+@*You can disable a Tag Helper at the element level with the Tag Helper opt-out character ("!").DOKUMENTACIJA*@
+@*Sa (!) kažemo da taj dio nije tag helper*@

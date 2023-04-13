@@ -151,6 +151,21 @@
     //==========================================================================================================
 
     #region
-    //
+    //EDITIRANJE I BRISANJE PROIZVODA
+
+    //Promjene koje radimo su u datotekama ---- Areas/Admin/Controllers/ProductsControllers.cs i Areas/Admin/Views/Products/Edit.cshtml
+
+    //Kada radimo Edit a imamo partial view moramo dodati još jedan parametar u ProductController.cs u Edit akciju --- int[] categoryIds --- _CategoryDropDownPartial.cshtml
+
+    //Za promjenu slike u editiranju dodali smo još jedan parametar --- IFormFile? newImage (on je opcionalan, zato stavljamo ?)
+
+    //Kod editiranja smo imali problem sa dodavanjem nove slike proizvoda, koja se drukčije šalje preko Html forme (IFormFile newImage je prazan a dodali smo novu sliku)
+    //moramo uključiti enkripciju za kompleksnije podatke kao što su slike
+    //Rješenje: enctype="multipart/form-data" dodati u početnu formu --- form asp-action="Edit" enctype="multipart/form-data"
+    //Tada se ta datoteka pohranjuje u privremeni/TEMP folder i kada više nema HTTP zahtjeva Temp se briše
+
+    //Preselektirane kategorije proizvoda --- ProductControllers.cs/[GET] Edit ---> ViewBag.ProductCategories = _context.ProductCategories.Where(c => c.ProductId == product.Id).Select(p => p.CategoryId).ToList();
+    //Nakon te linije koda moramo ažurirati partialView ---> _CategoryDropDownPartial.cshtml
+
     #endregion
 }

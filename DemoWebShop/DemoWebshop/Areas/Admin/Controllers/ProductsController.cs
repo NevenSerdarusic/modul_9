@@ -52,7 +52,7 @@ namespace DemoWebshop.Areas.Admin.Controllers
         public IActionResult Create()
         {
             //prebacujemo što smo napisali dolje niže unutar HTTP Post Create
-            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string ?? ""; //ako ne posotji poruka ona je po defaultu prazna
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string ?? ""; //ako ne postoji poruka ona je po defaultu prazna
             
             return View();
         }
@@ -142,6 +142,14 @@ namespace DemoWebshop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
+            //Dohvati ID-eve kategorija s kojima je proizvod povezan u SQL tablici ProductCategories (preselected)
+            ViewBag.ProductCategories = _context.ProductCategories.Where(c => c.ProductId == product.Id).Select(p => p.CategoryId).ToList(); //to je povezano sa djelomičnim pogledom _CategoryDropDownPartial.cshtml...Vrati nam koji je proizvod povezan sa kategorijom ili kategorijama
+
+            //Ako ne postoji error poruka spremi u ViewBag svojsvto
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] ?? "";
+
+
             return View(product);
         }
 
@@ -150,19 +158,69 @@ namespace DemoWebshop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Sku,InStock,Price,Image")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Sku,InStock,Price,Image")] Product product, IFormFile? newImage, int[] categoryIds)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
 
+            //Provjeri ako je odabrana barem jedna kategorija 
+            if (categoryIds.Length == 0)
+            {
+                TempData["ErrorMessage"] = "Molimo odaberite bar jednu kategoriju"; //Vraćamo korisnika na istu formu
+                return RedirectToAction(nameof(Edit), new {id = id}); //anonimni atribut =  new {id = id}
+            }
+
+            //ModelState --> prati naš model, klasu Product, odnosno atribute iznad property-a npr ako je [Required]
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //provjeri postoji li vrijednost parametra newImage (netko je dodao novu sliku)
+                    if (newImage != null)
+                    {
+                        //Primjer naziva nove slike: 2023-04-13-19-16-22_moja_slika1.jpg
+                        var newImageName = DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + " " + newImage.FileName.ToLower().Replace(" ", "_");
+
+                        //odabir putanje gdje će slika biti spremljena
+                        //rezultat: ~/www.root/images/products/naziv-slike.png
+                        var saveImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/products", newImageName);
+
+
+                        //Kreiraj direktorije i podirektorije unutar zadane putanje (wwwroot/images/products)
+                        Directory.CreateDirectory(Path.GetDirectoryName(saveImagePath));
+
+                        //ovdje se datoteka fizički kopira unutar zadane putanje (wwwroot/images/products) direktorija projekta
+                        using (var stream = new FileStream(saveImagePath, FileMode.Create))
+                        {
+                            newImage.CopyTo(stream);
+                        }
+
+                        //u stupac tablice u SQL pohranjujemo samo naziv datoteke
+                        product.Image = newImageName;
+                    }
+
                     _context.Update(product);
                     await _context.SaveChangesAsync();
+
+                    //AŽURIRANJE kategorije proizvoda u SQL tablici ProductCategories
+
+                    //1. Izbriši sve postojeće konekcije između kategorije i proizvoda (ako postoje)
+                    _context.ProductCategories.RemoveRange(_context.ProductCategories.Where(p => p.ProductId == id));
+                    _context.SaveChanges();
+
+                    //2. Ažuriraj nove podatke s vezom između proizvoda i kategorije u SQL tablici ProductCategory
+                    foreach (var category in categoryIds)
+                    {
+                        ProductCategory productCategory = new ProductCategory();
+                        productCategory.ProductId = product.Id;
+                        productCategory.CategoryId = category;
+
+                        _context.Add(productCategory);
+                    }
+                    _context.SaveChanges();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {

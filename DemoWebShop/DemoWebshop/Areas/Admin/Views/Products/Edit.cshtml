@@ -8,9 +8,16 @@
 
 <h4>Product</h4>
 <hr />
+
+@*ovdje prosljeđujemo poruku preko View Baga iz ProductsControllera*@
+@if (!String.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <p class="alert-danger">@ViewBag.ErrorMessage</p>
+}
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data"> @*tu smo dodali enctype radi podrške slanja datoteka sa jednog mjesta na drugo (za kompleksne datoteke, kao slike)*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -38,11 +45,22 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+            @*Ovo smo mijenjali*@
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <input type="hidden" asp-for="Image" class="form-control" />
+                <img src="~/images/products/@Model.Image" width="384" height="256"/> 
             </div>
+
+            @*Ovo smo dodali: name="" -> je parametar koji je povezan sa Edit akcijom u ProductControlleru, u toj akciji isto imamo taj parametar*@
+            <div class="form-group">
+                <label class="control-label">Upload new image</label>
+                <input type="file" name="newImage" class="form-control"/>
+            </div>
+
+            @*Ovo smo kopirali iz Create.cshtml*@
+            <partial name="~/Areas/Admin/Views/Shared/_CategoryDropDownPartial.cshtml" />
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
