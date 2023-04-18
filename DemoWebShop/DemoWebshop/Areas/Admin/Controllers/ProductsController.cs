@@ -265,9 +265,27 @@ namespace DemoWebshop.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
             }
+
+            //Entitiy Framework -> automatski podešava vanjski ključ (FK) na onDelete: Cascade (postoji i onDelete: Restrict koji je puno rigorozniji)
+            //Entity Framework briše sve zapise gdje je ID proizvoda vanjski ključ i brišesam zapis proizvoda
             var product = await _context.Products.FindAsync(id);
             if (product != null)
             {
+                //Provjeri postoji li podatak IMAGE u svojstvu našeg objekta
+                if (!String.IsNullOrWhiteSpace(product.Image))
+                {
+                    //putanja na disku servera gdje se slika nalazi
+                    //Pr.: C:/moj-folder/drugi-folder/projekt/wwwroot/images/products/slika.jpg
+                    //Directory.GetCurrentDirectory() ---> ugrađena klasa koja pronalazi naš direktorij, a unutar tog direktorija moramo reći gdje se nalaze naše slike
+                    var deleteImageFromPath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/images/products", product.Image);
+
+                    //Ako postoji datoteka, izbriši je (ovo je sigurnosti radi ako je krivo pohranimo)
+                    if (System.IO.File.Exists(deleteImageFromPath))
+                    {
+                        System.IO.File.Delete(deleteImageFromPath);
+                    }
+                }
+
                 _context.Products.Remove(product);
             }
             

@@ -12,6 +12,11 @@
     <p>@ViewData["Description"]</p>    
 </div>
 
+@*Aktivna sesija kada posjetimo neku radnju na aplikaciji i tada ključ ostaje postojan*@
+<p>
+    @Context.Session.GetString("sessionString")
+</p>
+
 
 @*Filtriranje proizvoda preko http get forme*@
 @*Koristimo bootstrap za formu*@
@@ -23,6 +28,17 @@
 
         <input type="text" class="form-control" name="searchQuery" />
 
+    </div>
+
+    @*PADAJUĆI IZBORNIK ZA PRETRAGU PO KATEGORIJAMA*@
+    <div class="col-3">
+        <select class="form-select" id="floatingSelect" name="categoryId">
+            <option selected value="0">All categories</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category.Id">@category.Title</option>
+            }
+        </select>
     </div>
 
     @*SORTIRANJE*@
@@ -54,21 +70,27 @@
 @*Radimo petlju da nam izlista sve proizvode iz Product*@
 @*Ovaj dio unutar foreach petlje smo kopirali sa Bootsptrapa - Cards se zove taj dio*@
 <div class="row">
+
     @foreach (var item in Model)
     {
-        <div class="card col-4 mb-3">
+        <div class="col-4 mb-3">
+            <div class="card">
+                @{
+                    string setImage = !String.IsNullOrEmpty(item.Image) ? "~/images/products/" + item.Image : "~/images/default-placeholder.png";
+                } <img src="@Url.Content(setImage)" class="card-img-top" alt="...">
 
-            @{
-                string setImage = !String.IsNullOrEmpty(item.Image) ? "~/images/products/" + item.Image : "~/images/default-placeholder.png";
-            }
-            
-            <img src="@Url.Content(setImage)" class="card-img-top" alt="...">
+                <div class="card-body">
 
-            <div class="card-body">
-                <h5 class="card-title">@item.Title</h5>
-                <p class="card-text">@item.Description</p>
-                <p class="card-text">@item.Price.ToString("C2")</p>
+                    <h5 class="card-title">@item.Title</h5> 
+
+                    <p class="card-text">@item.Description</p>
+
+                    <p class="card-text">@item.Price.ToString("C2")</p>
+
+                </div>
             </div>
         </div>
+
     }
+
 </div>

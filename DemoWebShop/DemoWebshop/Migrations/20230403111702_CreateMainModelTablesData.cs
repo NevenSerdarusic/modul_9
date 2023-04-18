@@ -85,7 +85,7 @@ namespace DemoWebshop.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade); //Kaskadno brisanje (drugo je Restrict). Za to je odgovoran Entity Framework. On briše sve veze gdje nađe proizvod po ID-u
                     table.ForeignKey(
                         name: "FK_OrderItems_Products_ProductID",
                         column: x => x.ProductID,

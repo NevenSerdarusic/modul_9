@@ -9,8 +9,10 @@
     //Microsoft.VisualStudio.Web.CodeGeneration.Design
     #endregion
 
+    //============================================================================================================
+
     #region
-    //Sadržaj AREAS FOLDER-a:
+    //SADRŽAJ AREAS FOLDER-a:
     //Identity
     //Data
     //ApplicationDbContext.cs
@@ -54,10 +56,9 @@
 
     //Radimo drugi update u bazu --- Package Manager Console ---> PM> update-database
 
-    //Kreiranje klasa modela ---- Models Folder (Category, Order, Product, OrderItem, ProductCategory)
+    //Kreiranje klasa modela ---- Models Folder ---> (Category, Order, Product, OrderItem, ProductCategory)
 
     //Radimo seed-anje podataka za tablice --- AplicationDbContext.cs ---> DbSet<Category>, ...
-
     #endregion
 
     //============================================================================================================
@@ -96,22 +97,20 @@
     //unutar partial viewa za admina dodati padajuće izbornike (npr.Category) --- _AdminMenuPartial 
 
     //pošto nemamo dizajn unutar novog partial view-a (Categories) u Admin izborniku moramo kopirati (_ViewImports.cshtml i _ViewStart.cshtml) koji se nalaze unutar Views foldera i kopirati te dvije datoteke unutar Areas/Admin/Views
-
-
     #endregion
+
     //=========================================================================================================
 
     #region
     //PODEŠAVANJE LOZINKE ZA KORISNIKA (ako želimo olabaviti lozinku)
 
     //unutar Program.cs ---> builder.Services.Configure<IdentityOptions>
-
     #endregion
 
     //==========================================================================================================
 
     #region
-    //Proširujemo HTML formu za registraciju korisnika (ime,prezime,adresa) i želimo im automatski dodijeliti ulogu Customer
+    //PROŠIRIVANJE HTML FORME za registraciju korisnika (ime,prezime,adresa) i želimo im automatski dodijeliti ulogu Customer
 
     //To radimo unutar Register.cshtml.cs --- Areas/Identity/Pages/Account/Register.cshtml ---> private readonly RoleManager<IdentityRole> _roleManager;
 
@@ -129,7 +128,7 @@
     //==========================================================================================================
 
     #region
-    //PODEŠAVANJE DIZAJNA JAVNOG DIJELA APLIKACIJE
+    //PODEŠAVANJE DIZAJNA JAVNOG DIJELA APLIKACIJE (Home Page)
     //(ovaj dio je vidljiv na Home dijelu stranice bez potrebe da se logiramo ili registriramo)
 
     //Uređivanje Home Page-a --- Views/Home/Index.cshtml
@@ -144,8 +143,6 @@
     //Uključiti Case Sensitive za mala i velika slova
 
     //SORTIRANJE proizvoda
-
-
     #endregion
 
     //==========================================================================================================
@@ -153,7 +150,8 @@
     #region
     //EDITIRANJE I BRISANJE PROIZVODA
 
-    //Promjene koje radimo su u datotekama ---- Areas/Admin/Controllers/ProductsControllers.cs i Areas/Admin/Views/Products/Edit.cshtml
+    //EDITIRANJE:
+    //Promjene koje radimo su u datotekama ----> Areas/Admin/Controllers/ProductsControllers.cs i Areas/Admin/Views/Products/Edit.cshtml
 
     //Kada radimo Edit a imamo partial view moramo dodati još jedan parametar u ProductController.cs u Edit akciju --- int[] categoryIds --- _CategoryDropDownPartial.cshtml
 
@@ -166,6 +164,37 @@
 
     //Preselektirane kategorije proizvoda --- ProductControllers.cs/[GET] Edit ---> ViewBag.ProductCategories = _context.ProductCategories.Where(c => c.ProductId == product.Id).Select(p => p.CategoryId).ToList();
     //Nakon te linije koda moramo ažurirati partialView ---> _CategoryDropDownPartial.cshtml
+
+    //BRISANJE:
+    //ProductsController.cs --- GET Delete akcija
+
+    //Brisanje fotografija proizvoda (u slučaju da proizvodi ne dijele istu fotografiju) --- proširujemo metodu u GET Delete akciji
+    #endregion
+
+    //==========================================================================================================
+
+    #region
+    //IZRADA SESIJE
+
+    //link za sesije na dokumentaciji: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0#session-state
+
+    //dodajemo novi Empty Controller za košaricu --- Controllers Folder - Add New - CartController.cs
+
+    //kreiranje servisa za sesiju --- Program.cs ---> builder.Services.AddDistributedMemoryCache(); , builder.Services.AddSession();, app.UseSession();
+
+    //Dodajemo TestSession/Košarica gumba na Home page-u --- Views/Shared/Layout.cshtml ---> ispod Privacy buttona
+
+    //Dodavanje Empty Viewa za TestSession akciju --- označiti akciju i AddView ---> sprema se u Views/Cart folder
+
+    //Dodali smo također ključ ako netko posjeti stranicu Privacy na našem webu --- Views/Home/Privacy.cshtml (samo za probu)
+    #endregion
+
+    //==========================================================================================================
+
+    #region
+    //IZRADA KOŠARICE
+
+    //
 
     #endregion
 }

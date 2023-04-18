@@ -44,6 +44,11 @@ public class Program
             }
          );
 
+
+        //Kreiraj servise za sesiju
+        builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddSession();
+        
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -75,6 +80,9 @@ public class Program
         app.UseAuthentication();
 
         app.UseAuthorization();
+
+        //Želimo koristiti sesiju 
+        app.UseSession();
 
         //dodavanje rute za Admina
         app.MapAreaControllerRoute(
