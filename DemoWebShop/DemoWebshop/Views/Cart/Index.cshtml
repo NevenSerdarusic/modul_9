@@ -1,0 +1,69 @@
+﻿@*
+    Pogled košarice:
+*@
+
+@model List<DemoWebshop.Services.Cart.CartItem>
+
+<h1>Cart</h1>
+<hr />
+
+<div class="row">
+
+    @if (!String.IsNullOrEmpty(ViewBag.CartErrorMessage))
+    {
+        <div class="col-12">
+            <p class="alert-danger">
+                @ViewBag.CartErrorMessage
+            </p>
+        </div>
+    }
+
+    <div class="col-12">
+
+        @*Ako je košarica prazna*@
+        @if (Model.Count == 0)
+        {
+            <h3>Your cart is empty!</h3>
+            <hr/>
+            @*Vrati korisnika na početnu stranicu*@
+            <a class="btn btn-success" asp-controller="Home" asp-action="Index">Continue shopping</a> 
+        }
+        else
+        {
+            @*Ako košarica nije prazna, prikaži dizajn za prikaz stavki košarice*@
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@*Gumb za uklanjanje iz košarice*@</td>
+                            <td>@item.Product.Title</td>
+                            <td>@item.Product.Price.ToString("C2")</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.GetTotal().ToString("C2")</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>
+                            Total cost: @Model.Sum(s => s.GetTotal()).ToString("C2")
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+
+        @*NARUDŽBA*@
+        <a class="btn btn-primary" asp-controller="Order" asp-action="Checkout">Checkout</a>
+
+    </div>
+
+</div>

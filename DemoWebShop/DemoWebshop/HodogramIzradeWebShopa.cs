@@ -194,7 +194,44 @@
     #region
     //IZRADA KOŠARICE
 
-    //
+    //Dodavanje forme za košaricu --- Index.cshtml ---> <form method="POST" asp-area="" asp-controller="Cart" asp-action="AddToCart">
 
+    //Dodavanje HTTP Post akcije u kontroleru --- CartController.cs ---> public IActionResult AddToCart(int productId, decimal quantity)
+
+    //Treba postaviti uvjete za košaricu --- CartController.cs ---> public IActionResult AddToCart
+
+    //Ubrizgavamo ovisnost o dbContext klasi unutar našeg kontrolera --- CartController.cs ---> private readonly ApplicationDbContext _dbContext;
+
+    //Radimo novi folder --- Services
+
+    //Unutar tog foldera radimo folder koji je vezan uz košaricu --- Cart 
+
+    //Unutar foldera Cart radimo klasu koja će biti vezana uz sesiju --- CartItem.cs
+
+    //Radimo statičku klasu za sesije --- Services/SessionExtensions.cs
+
+    //Moramo instalirati paket za serijalizaciju --- Nuget ---> NewtonSoft.json
+
+    //Unutar SessionExtensions.cs radimo metode za serijalizaciju/deserijalizaciju
+
+    //Definiramo varijablu za ključ sesije za košaricu --- CartController.cs ---> public const string sessionCartKey = "_cart";
+
+    //Radimo view za košaricu --- CartController.cs/Index Akcija ---> add Empty View (Index.cshtml) koji se nalazi u Views/Cart/
+
+    //Dodajemo gumb za košaricu na ribbon početne stranice --- Views/Shared/Layout.cshtml
+
+    //Dodajemo tablicu za ispis proizvoda koji se nalazi u košarici --- Views/Cart/Index.cshtml
+    #endregion
+
+    #region
+    //IZRADA NARUDŽBE
+
+    //radimo gumb za narudžbu --- Views/Cart/Index.cshtml
+
+    //Radimo novi Empty kontroller --- OrderController.cs ---> Controllers/
+
+    //Radimo Empty View za akciju Checkout u tom kontroleru --- Checkout.cshtml ---> Views/Order/
+
+    //Zato jer nam se ponavlja isti dio koda da korisniku pokažemo proizvode bilo bi dobro napraviti partial view
     #endregion
 }
