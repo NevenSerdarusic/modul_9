@@ -233,5 +233,36 @@
     //Radimo Empty View za akciju Checkout u tom kontroleru --- Checkout.cshtml ---> Views/Order/
 
     //Zato jer nam se ponavlja isti dio koda da korisniku pokažemo proizvode bilo bi dobro napraviti partial view
+
+    //Moramo prebaciti podatke o korisniku iz forme kod narudžbe koju smo stvorili u Views/Order/Checkout.cshtml --- Order.cs --> FirstName, LastNAme, Email, PhoneNumber, Country, City, PostalCode, Address, Message
+
+    //Radimo migraciju prema bazi za propertyima iz Order.cs --- PackageManagerConsole ---> PM> add-migration ExtendOrdersTable
+
+    //Nakon toga radimo update baze podataka --- PackageManagerConsole ---> update-database
+
+    //Ako je sve u redu provjeravamo u bazi podataka da li je sve uspješno prošlo --- dbo.Orders-Column i provjeriti u dbo.EFMigrationHistroy da li se zadnja migracija tamo nalazi
+
+    //Moramo napraviti gumbove na formi koji će slati podatke --- Checkout.cshtml
+
+    //Radimo mapiranje podataka koji se šalju iz forme, odnosno akciju. Trebamo dobiti objekt klase Order --- OrderController.cs ---> public IActionResult CreateOrder(Order newOrder) koji je HTTP Post
+
+    //U OrederController.cs moramo naprviti dva priuvatna polja za pristup bazi i useru: private readonly ApplicationDbContext _dbContext; private readonly UserManager<ApplicationUser> _userManager; i napraviti Dependencies Injection u konstruktor :
+    /*public OrderController(ApplicationDbContext dbContext, UserManager<ApplicationUser> user)
+       {
+        _dbContext = dbContext;
+        _userManager = user;
+      }
+     */
+
+    //Sa tim ovisnostima možemo dohvatiti usera preko ID-a ako je prijavljen --- OrderController.cs ---> newOrder.UserId = _userManager.GetUserId(User);
+
+    //dodajemo novog korisnika u Orders u bazi podataka i spremamo promjene --- _dbContext.Orders.Add(newOrder); _dbContext.SaveChanges();
+
+    //Provjera da li sve radi: Dodaj nešto u košaricu i odi na Checkout, ispuni sva polja sejvaj.
+
+    //Ako je sve dobro pogledati u bazi podataka u tablici Orders, tamo zapis o kupnji mora postojati
+
+
+
     #endregion
 }

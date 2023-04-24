@@ -4,6 +4,7 @@ using DemoWebshop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoWebshop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230420163025_ExtendOrdersTable")]
+    partial class ExtendOrdersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +109,7 @@ namespace DemoWebshop.Migrations
                             Id = "e02324b1-18a5-4ca9-b562-b7b85eadb1aa",
                             AccessFailedCount = 0,
                             Adress = "Stara cesta bb",
-                            ConcurrencyStamp = "f289c4a2-de6b-4fc0-abfd-bd7acdbc1261",
+                            ConcurrencyStamp = "64941a2d-11f9-4280-9e3c-63f6666b00be",
                             Email = "mico@admin.com",
                             EmailConfirmed = false,
                             FirstName = "Mićo",
@@ -115,9 +117,9 @@ namespace DemoWebshop.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "MICO@ADMIN.COM",
                             NormalizedUserName = "MICO@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJSvlfkJ/CQHO8cEXgtXPlrZgb9AuqSwCuEljuIFP0RLsbQY315rDDvbQ1qvxLXSKQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH+HrnVSAOIIAImEpmdglCbjzDkPolobBwJmf7cWxCbKxiqghLzcymbga5CZzg4Okw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a8cf807b-5723-49e8-8928-b0c232939ba7",
+                            SecurityStamp = "13f43b93-de34-4b89-bb11-a1be02f7c4e7",
                             TwoFactorEnabled = false,
                             UserName = "mico@admin.com"
                         });
@@ -424,14 +426,14 @@ namespace DemoWebshop.Migrations
                         new
                         {
                             Id = "209cf38b-e7a3-48b2-a5ca-6744d6eb464a",
-                            ConcurrencyStamp = "918b1315-a916-41e8-965b-1c330e56232b",
+                            ConcurrencyStamp = "6632d6b7-4895-447c-b7a9-3c0e33450c03",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "8aaecd59-3fc7-40db-a1e6-8ea379a9d34c",
-                            ConcurrencyStamp = "13214f3c-5f38-4f68-ac13-12e32f05bb13",
+                            ConcurrencyStamp = "8a814023-a2bd-44b2-bbe2-f96bf38452d5",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

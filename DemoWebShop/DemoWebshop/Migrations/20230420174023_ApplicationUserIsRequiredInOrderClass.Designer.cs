@@ -4,6 +4,7 @@ using DemoWebshop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoWebshop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230420174023_ApplicationUserIsRequiredInOrderClass")]
+    partial class ApplicationUserIsRequiredInOrderClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +109,7 @@ namespace DemoWebshop.Migrations
                             Id = "e02324b1-18a5-4ca9-b562-b7b85eadb1aa",
                             AccessFailedCount = 0,
                             Adress = "Stara cesta bb",
-                            ConcurrencyStamp = "f289c4a2-de6b-4fc0-abfd-bd7acdbc1261",
+                            ConcurrencyStamp = "ccca26a5-75fd-4000-b5c3-7943d4e8106f",
                             Email = "mico@admin.com",
                             EmailConfirmed = false,
                             FirstName = "Mićo",
@@ -115,9 +117,9 @@ namespace DemoWebshop.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "MICO@ADMIN.COM",
                             NormalizedUserName = "MICO@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJSvlfkJ/CQHO8cEXgtXPlrZgb9AuqSwCuEljuIFP0RLsbQY315rDDvbQ1qvxLXSKQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPIXUkND0SZat3hb5NnnQ8plYFGc+lP54Ll1I6fBH3fAFriY6ldmwJpB2n9MJVX5OQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a8cf807b-5723-49e8-8928-b0c232939ba7",
+                            SecurityStamp = "fa377679-bfb4-42f2-aafe-2b8913b28a7d",
                             TwoFactorEnabled = false,
                             UserName = "mico@admin.com"
                         });
@@ -243,7 +245,6 @@ namespace DemoWebshop.Migrations
                         .HasColumnType("decimal(9,2)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -424,14 +425,14 @@ namespace DemoWebshop.Migrations
                         new
                         {
                             Id = "209cf38b-e7a3-48b2-a5ca-6744d6eb464a",
-                            ConcurrencyStamp = "918b1315-a916-41e8-965b-1c330e56232b",
+                            ConcurrencyStamp = "cda6cdf8-8787-456a-97cd-bd8a2d1c5fed",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "8aaecd59-3fc7-40db-a1e6-8ea379a9d34c",
-                            ConcurrencyStamp = "13214f3c-5f38-4f68-ac13-12e32f05bb13",
+                            ConcurrencyStamp = "c4dee2fb-2ec6-4ff9-a009-30bb8b27fc96",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -558,9 +559,7 @@ namespace DemoWebshop.Migrations
                 {
                     b.HasOne("DemoWebshop.Areas.Identity.Data.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

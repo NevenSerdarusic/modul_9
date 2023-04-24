@@ -115,7 +115,35 @@ public class CartController : Controller
 
     }
 
+
+
+
     //TODO: RemoveFromCart(int productId)
+    public IActionResult RemoveFromCart(int productId)
+    {
+        //pronađi sesiju košarice i dodjeli je varijabli generičke kolekcije
+        List<CartItem> cart = HttpContext.Session.GetCartObjectFromJson(sessionCartKey);
+
+        //Ukloni sve proizvode koji se podudaraju sa Id-em parametra
+        var productToRemove = cart.FirstOrDefault(p => p.Product.Id == productId);
+
+        if (productToRemove != null) 
+        {
+            cart.Remove(productToRemove);
+        }
+
+        //Ažuriraj sesiju, odnosno košaricu
+        HttpContext.Session.SetCartObjectAsJson(sessionCartKey, cart);
+
+        //vrati korisnika na stranicu košarice
+        return RedirectToAction("Index", "Home");
+    }
+
+
+
+
+
+
 
 
     //GET: TestSession() akcija

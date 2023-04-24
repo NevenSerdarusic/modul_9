@@ -45,7 +45,8 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@*Gumb za uklanjanje iz košarice*@</td>
+                                @*Gumb za uklanjanje iz košarice*@
+                            <td> <a class="btn btn-danger" asp-controller="Cart" asp-action="RemoveFromCart">Remove</a> </td>
                             <td>@item.Product.Title</td>
                             <td>@item.Product.Price.ToString("C2")</td>
                             <td>@item.Quantity</td>
